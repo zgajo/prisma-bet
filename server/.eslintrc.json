@@ -1,0 +1,15 @@
+{
+	"env": {
+		"es6": true,
+		"node": true
+	},
+	"extends": "eslint:recommended",
+	"rules": {
+		"no-var": "error",
+		"no-console": "warn",
+		"no-unused-vars": "error",
+		"vars-on-top": "warn",
+		"block-scoped-var": "warn",
+		"sort-keys": "error"
+	}
+}

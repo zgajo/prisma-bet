@@ -1,0 +1,10 @@
+endpoint: ${env:PRISMA_SERVER}:${env:PRISMA_PORT}
+datamodel: datamodel.prisma
+
+generate:
+  - generator: graphql-schema
+    output: ../src/prisma-generated/
+
+hooks:
+  post-deploy:
+    - prisma generate
