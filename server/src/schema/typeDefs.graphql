@@ -1,3 +1,22 @@
+scalar DateTime
+
+type User {
+	id: ID!
+	email: String!
+	name: String!
+	createdAt: DateTime!
+}
+
+type AuthPayload {
+	token: String!
+	user: User!
+}
+
 type Query {
-	test: String
+	me: User
+}
+
+type Mutation {
+	signup(name: String!, email: String!, password: String!): AuthPayload!
+	login(email: String!, password: String!): AuthPayload!
 }

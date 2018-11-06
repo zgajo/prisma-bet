@@ -10,7 +10,7 @@
     "dev:core": "concurrently --names \"server,client\" --prefix \"[{name}]\" --prefix-colors \"bgCyan.reset.bold,bgGreen.reset.bold\" \"npm run dev:server --silent\" \"npm run dev:client --silent\"",
     "dev:client": "cd client && npm run start --silent",
     "dev:server": "cd server && npm run dev --silent",
-    "prisma:deploy": "cd server/prisma && prisma deploy",
+    "prisma:deploy": "cd server/prisma && prisma deploy -e ../.env",
     "start": "as-a PROD npm run start:core --silent",
     "start:core": "concurrently --names \"server,client\" --prefix \"[{name}]\" --prefix-colors \"bgCyan.reset.bold,bgGreen.reset.bold\" \"npm run start:server --silent\" \"npm run start:client --silent\"",
     "start:client": "cd client && npm start --silent",
