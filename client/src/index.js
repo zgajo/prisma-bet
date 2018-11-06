@@ -1,10 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'import { Layout, Menu, Icon } from 'antd';
+import { MainRouter } from './router';
+
+const mountNode = document.getElementById('root');
+
+ReactDOM.render(
+	<Router>
+		<MainRouter />
+	</Router>,
+	mountNode,
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
