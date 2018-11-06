@@ -5,11 +5,12 @@ type User {
 	email: String!
 	name: String!
 	createdAt: DateTime!
+	token: AuthPayload! # added new
 }
 
 type AuthPayload {
 	token: String!
-	user: User!
+	# user: User!
 }
 
 type Query {
@@ -17,6 +18,6 @@ type Query {
 }
 
 type Mutation {
-	signup(name: String!, email: String!, password: String!): AuthPayload!
+	signup(name: String!, email: String!, password: String!): User! # AuthPayload!
 	login(email: String!, password: String!): AuthPayload!
 }

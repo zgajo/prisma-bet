@@ -36,8 +36,9 @@ const Mutation = {
 		);
 
 		return {
-			token: sign({ userId: user.id }, APP_SECRET),
-			user,
+			//
+			...user,
+			token: { token: sign({ userId: user.id }, APP_SECRET) },
 		};
 	},
 };
