@@ -21,24 +21,20 @@ const Mutation = {
 			user,
 		};
 	},
-	signup: async (_, { name, email, password }, ctx, info) => {
+	signup: async (_, { name, email, password }, ctx) => {
 		const hashedPassword = await hash(password, 10);
 
-		const user = await ctx.db.mutation.createUser(
-			{
-				data: {
-					email,
-					name,
-					password: hashedPassword,
-				},
+		const user = await ctx.db.mutation.createUser({
+			data: {
+				email,
+				name,
+				password: hashedPassword,
 			},
-			info,
-		);
+		});
 
 		return {
-			//
-			...user,
-			token: { token: sign({ userId: user.id }, APP_SECRET) },
+			token: sign({ userId: user.id }, APP_SECRET),
+			user,
 		};
 	},
 };
