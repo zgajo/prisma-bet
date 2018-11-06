@@ -19,6 +19,8 @@ const style = {
 		width: '100%',
 	},
 	login_page: {
+		background: 'url(background-form-login-1.png)',
+		'background-size': 'contain',
 		display: 'flex',
 		height: '100%',
 	},
