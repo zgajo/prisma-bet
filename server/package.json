@@ -6,7 +6,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node .",
     "dev": "nodemon .",
-    "build": "babel --ignore __tests__,__mocks__ --out-dir dist src"
+    "build": "babel --ignore __tests__,__mocks__ --out-dir dist src",
+    "test": "cd .. && npm run test:server"
   },
   "author": "Darko Pranjić",
   "license": "ISC",

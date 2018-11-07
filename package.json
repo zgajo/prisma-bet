@@ -10,19 +10,24 @@
 		"dev:core": "concurrently --names \"server,client\" --prefix \"[{name}]\" --prefix-colors \"bgCyan.reset.bold,bgGreen.reset.bold\" \"npm run dev:server --silent\" \"npm run dev:client --silent\"",
 		"dev:client": "cd client && npm run start --silent",
 		"dev:server": "cd server && npm run dev --silent",
+		"husky": "lint-staged && eslint --max-warnings 0 .",
 		"prisma:deploy": "cd server && prisma deploy",
 		"prisma:seed": "cd server/prisma && prisma seed",
 		"start": "as-a PROD npm run start:core --silent",
 		"start:core": "concurrently --names \"server,client\" --prefix \"[{name}]\" --prefix-colors \"bgCyan.reset.bold,bgGreen.reset.bold\" \"npm run start:server --silent\" \"npm run start:client --silent\"",
 		"start:client": "cd client && npm start --silent",
 		"start:server": "cd server && npm start --silent",
-		"husky": "lint-staged && eslint --max-warnings 0 ."
+		"test:server": "jest __tests__  --watch"
+	},
+	"jest": {
+		"verbose": true
 	},
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
 		"concurrently": "^4.0.1",
-		"eslint": "^5.6.0"
+		"eslint": "^5.6.0",
+		"jest": "^23.6.0"
 	},
 	"devDependencies": {
 		"babel-eslint": "^9.0.0",
