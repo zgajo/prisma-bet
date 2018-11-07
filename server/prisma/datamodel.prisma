@@ -1,6 +1,7 @@
 type User {
+	# for any unique field it will create possibility to search in user query ba it. (WhereUniqueInput)
 	id: ID! @unique
-	email: String!
+	username: String! @unique
 	password: String!
 	name: String!
 	createdAt: DateTime!

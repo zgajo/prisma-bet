@@ -3,17 +3,19 @@ const { sign } = require('jsonwebtoken');
 const { APP_SECRET } = require('../utils');
 
 const Mutation = {
-	login: async (_, { email, password }, ctx, info) => {
-		const user = await ctx.db.query.users({ where: { email: 'test@gs.lk' } }, info);
+	login: async (_, { username, password }, ctx) => {
+		const user = await ctx.db.query.user({ where: { username } });
 
 		if (!user) {
-			throw new Error(`No user found for email: ${email}`);
+			// No user for username
+			throw new Error(`Invalid credentials 011`);
 		}
 
 		const valid = await compare(password, user.password);
 
 		if (!valid) {
-			throw new Error('Invalid password');
+			// Passwords not match
+			throw new Error(`Invalid credentials 012`);
 		}
 
 		return {
@@ -21,14 +23,14 @@ const Mutation = {
 			user,
 		};
 	},
-	signup: async (_, { name, email, password }, ctx) => {
+	signup: async (_, { name, username, password }, ctx) => {
 		const hashedPassword = await hash(password, 10);
 
 		const user = await ctx.db.mutation.createUser({
 			data: {
-				email,
 				name,
 				password: hashedPassword,
+				username,
 			},
 		});
 

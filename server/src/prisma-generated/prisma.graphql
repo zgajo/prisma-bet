@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Tue Nov 06 2018 22:01:37 GMT+0100 (Central European Standard Time)
+# timestamp: Wed Nov 07 2018 11:35:38 GMT+0100 (Central European Standard Time)
 
 type AggregateUser {
   count: Int!
@@ -80,7 +80,7 @@ type Subscription {
 
 type User implements Node {
   id: ID!
-  email: String!
+  username: String!
   password: String!
   name: String!
   createdAt: DateTime!
@@ -97,7 +97,7 @@ type UserConnection {
 }
 
 input UserCreateInput {
-  email: String!
+  username: String!
   password: String!
   name: String!
 }
@@ -114,8 +114,8 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  email_ASC
-  email_DESC
+  username_ASC
+  username_DESC
   password_ASC
   password_DESC
   name_ASC
@@ -128,7 +128,7 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  email: String!
+  username: String!
   password: String!
   name: String!
   createdAt: DateTime!
@@ -174,7 +174,7 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
-  email: String
+  username: String
   password: String
   name: String
 }
@@ -228,46 +228,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  email: String
+  username: String
 
   """All values that are not equal to given value."""
-  email_not: String
+  username_not: String
 
   """All values that are contained in given list."""
-  email_in: [String!]
+  username_in: [String!]
 
   """All values that are not contained in given list."""
-  email_not_in: [String!]
+  username_not_in: [String!]
 
   """All values less than the given value."""
-  email_lt: String
+  username_lt: String
 
   """All values less than or equal the given value."""
-  email_lte: String
+  username_lte: String
 
   """All values greater than the given value."""
-  email_gt: String
+  username_gt: String
 
   """All values greater than or equal the given value."""
-  email_gte: String
+  username_gte: String
 
   """All values containing the given string."""
-  email_contains: String
+  username_contains: String
 
   """All values not containing the given string."""
-  email_not_contains: String
+  username_not_contains: String
 
   """All values starting with the given string."""
-  email_starts_with: String
+  username_starts_with: String
 
   """All values not starting with the given string."""
-  email_not_starts_with: String
+  username_not_starts_with: String
 
   """All values ending with the given string."""
-  email_ends_with: String
+  username_ends_with: String
 
   """All values not ending with the given string."""
-  email_not_ends_with: String
+  username_not_ends_with: String
   password: String
 
   """All values that are not equal to given value."""
@@ -374,4 +374,5 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  username: String
 }

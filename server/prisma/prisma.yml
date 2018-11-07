@@ -1,6 +1,9 @@
 endpoint: http://localhost:4466
 datamodel: datamodel.prisma
 
+seed:
+  import: seed.graphql
+
 hooks:
   post-deploy:
     - graphql get-schema --project prisma
