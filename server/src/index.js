@@ -10,7 +10,9 @@ const server = new GraphQLServer({
 		return {
 			...request,
 			db: new Prisma({
-				endpoint: `http://localhost:4466`,
+				endpoint: `${process.env.PRISMA_SERVER}:${process.env.PRISMA_PORT}/${process.env.PRISMA_SERVICE}/${
+					process.env.NODE_ENV
+				}`,
 				typeDefs: 'src/prisma-generated/prisma.graphql',
 			}),
 		};

@@ -1,10 +1,13 @@
-endpoint: http://localhost:4466
+endpoint: ${env:PRISMA_SERVER}:${env:PRISMA_PORT}/${env:PRISMA_SERVICE}/${env:NODE_ENV}
 datamodel: datamodel.prisma
 
 seed:
-  import: seed.graphql
+  import: seed.${env:NODE_ENV}.graphql
 
 hooks:
   post-deploy:
+    - echo Deploying to - ${env:PRISMA_SERVER}:${env:PRISMA_PORT}/${env:PRISMA_SERVICE}/${env:NODE_ENV}
     - graphql get-schema --project prisma
     - graphql prepare
+    - prisma reset -f # Deleting everything from db
+    - prisma seed
