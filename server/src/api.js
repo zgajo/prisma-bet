@@ -5,7 +5,8 @@ const fs = require('fs');
 
 const typeDefs = fs.readFileSync(__dirname + '/schema/typeDefs.graphql', 'utf8');
 
-export const db = new Prisma({
+// Exporting prisma, so that can be imported for  testing
+const db = new Prisma({
 	endpoint: `${process.env.PRISMA_SERVER}:${process.env.PRISMA_PORT}/${process.env.PRISMA_SERVICE}/${
 		process.env.NODE_ENV
 	}`,

@@ -12,6 +12,7 @@
   "author": "Darko Pranjić",
   "license": "ISC",
   "dependencies": {
+    "@types/jest": "^23.3.9",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
@@ -47,6 +48,7 @@
     "babel-register": "^6.26.0",
     "cross-env": "^5.2.0",
     "husky": "^1.1.2",
+    "jest": "^23.6.0",
     "nodemon": "^1.18.5"
   }
 }

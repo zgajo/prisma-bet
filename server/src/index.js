@@ -12,4 +12,12 @@ const server = new GraphQLServer({
 	typeDefs,
 });
 
-server.start();
+const serverOptions = {
+	debug: true,
+	endpoint: '/graphql',
+	playground: '/docs',
+	port: 5000,
+	tracing: true,
+};
+
+server.start(serverOptions);

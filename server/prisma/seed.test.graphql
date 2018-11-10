@@ -1,7 +1,16 @@
 mutation {
-	createUser(
+	c1: createUser(
 		data: {
 			username: "dpranjic_Test"
+			password: "$2b$10$kG8XDGvTrDULHzCRYb6S9ONIQlI.SlOwdd0uLFTN6Th65ZtEVLzZC"
+			name: "Darko Pranjić"
+		}
+	) {
+		id
+	}
+	c2: createUser(
+		data: {
+			username: "dpranjic2_Test"
 			password: "$2b$10$kG8XDGvTrDULHzCRYb6S9ONIQlI.SlOwdd0uLFTN6Th65ZtEVLzZC"
 			name: "Darko Pranjić"
 		}
