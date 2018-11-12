@@ -19,7 +19,7 @@ const Mutation = {
 		}
 
 		return {
-			token: sign({ userId: user.id }, APP_SECRET),
+			token: sign({ userId: user.id }, APP_SECRET, { expiresIn: '1h' }),
 			user,
 		};
 	},

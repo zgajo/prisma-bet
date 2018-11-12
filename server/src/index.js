@@ -16,7 +16,7 @@ const serverOptions = {
 	debug: true,
 	endpoint: '/graphql',
 	playground: '/docs',
-	port: 5000,
+	port: 4000,
 	tracing: true,
 };
 
