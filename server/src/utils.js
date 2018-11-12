@@ -3,7 +3,8 @@ const { verify } = require('jsonwebtoken');
 const APP_SECRET = 'appsecret321';
 
 function getUserId(context) {
-	const Authorization = context.request.headers.authorization;
+	const Authorization = context && context.request && context.request.headers && context.request.headers.authorization;
+
 	if (Authorization) {
 		const token = Authorization.replace('Bearer ', '');
 		const verifiedToken = verify(token, APP_SECRET);

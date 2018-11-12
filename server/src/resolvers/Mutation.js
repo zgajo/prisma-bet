@@ -8,14 +8,14 @@ const Mutation = {
 
 		if (!user) {
 			// No user for username
-			throw new Error(`Invalid credentials 011`);
+			throw new Error(`Invalid credentials`);
 		}
 
 		const valid = await compare(password, user.password);
 
 		if (!valid) {
 			// Passwords not match
-			throw new Error(`Invalid credentials 012`);
+			throw new Error(`Invalid credentials`);
 		}
 
 		return {
