@@ -1,95 +1,77 @@
 const { runQuery } = require('../../runMockServer');
-/**
- * TODO:
- * Remove queries and reused data to seperate helper module
- */
-// expired token
-const expToken =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjam9lZjNsZjgwMDA5MDk3MHFsdW0wbnF3IiwiaWF0IjoxNTQyMDQxMjA1LCJleHAiOjE1NDIwNDEyNjV9.RAbSlzR3kDThmxRduWVDRyzDKhz9Auiy4IskJ5XgckQ';
+const { expToken, meQuery, usersQuery, loginMutation, loginData, setup } = require('./helpers');
 
-const query = `
-	{
-		users {
-			id
-		}
-	}
-`;
+describe('QUERY', () => {
+	describe('Token', () => {
+		let token;
+		beforeAll(async () => {
+			const okLogin = await runQuery(loginMutation, { ...loginData });
+			token = okLogin && okLogin.data && okLogin.data.login && okLogin.data.login.token;
+		});
 
-const meQuery = `
-{
-	me{
-	  id
-	  username
-	  name
-	}
-  }
-`;
+		test('should return new token if current is valid', async () => {
+			const { request, response } = setup();
 
-describe('Query', () => {
+			request.headers.authorization = 'Bearer ' + token;
+
+			await runQuery(
+				meQuery,
+				{},
+				{
+					request,
+					response, // If authorization is successful, it will return new token
+				},
+			);
+
+			expect(response.get('authorization')).not.toBe(token);
+		});
+
+		test('should return "Not Authorised!" if token is not valid', async () => {
+			const { request, response } = setup();
+
+			request.headers.authorization = 'Bearer ' + expToken;
+
+			const result = await runQuery(
+				meQuery,
+				{},
+				{
+					request,
+					response, // If authorization is successful, it will return new token
+				},
+			);
+
+			expect(result.data.me).toBeNull();
+			expect(result.errors.length).toBeGreaterThan(0);
+			expect(result.errors[0].message).toBe('Not Authorised!');
+		});
+	});
+
 	test('should return 2 users', async () => {
-		const result = await runQuery(query);
+		const result = await runQuery(usersQuery);
 
 		expect(result.data).not.toBeNull();
 		expect(result.data.users).toBeInstanceOf(Array);
 		expect(result.data.users.length).toBeGreaterThan(1);
 	});
 
-	test('should return "Not Authorised!" if token is not valid', async () => {
-		const result = await runQuery(
-			meQuery,
-			{},
-			/**
-			 * TODO:
-			 * make mock functions from request and response
-			 */
-			{
-				request: {
-					headers: {
-						authorization: 'Bearer ' + expToken,
-					},
-				},
-				response: new Map(), // If authorization is successful, it will return new token
-			},
-		);
+	test('should return logged user', async () => {
+		const okLogin = await runQuery(loginMutation, { ...loginData });
+		const token = okLogin && okLogin.data && okLogin.data.login && okLogin.data.login.token;
+		const { request, response } = setup();
 
-		expect(result.data.me).toBeNull();
-		expect(result.errors.length).toBeGreaterThan(0);
-		expect(result.errors[0].message).toBe('Not Authorised!');
-	});
-
-	test('should return user', async () => {
-		const loginData = `
-			mutation($username:String!, $password:String!){
-				login(username: $username, password:$password){
-				token
-				user{
-					id
-					username
-					name
-				}
-				}
-			}
-			`;
-
-		const testData = { password: 'test', username: 'dpranjic_Test' };
-
-		const okLogin = await runQuery(loginData, { ...testData });
+		request.headers.authorization = 'Bearer ' + token;
 
 		const result = await runQuery(
 			meQuery,
 			{},
 			{
-				request: {
-					headers: {
-						authorization: 'Bearer ' + okLogin.data.login.token,
-					},
-				},
-				response: new Map(), // If authorization is successful, it will return new token
+				request,
+				response, // If authorization is successful, it will return new token
 			},
 		);
 
 		expect(result.data.me).not.toBeNull();
 		expect(result.errors).toBeUndefined();
-		expect(result.data.me.username).toEqual(testData.username);
+		expect(result.data.me.username).toEqual(loginData.username);
 	});
 });
