@@ -1,7 +1,7 @@
 mutation {
 	createUser(
 		data: {
-			username: "dpranjic2"
+			username: "dpranjic"
 			password: "$2b$10$kG8XDGvTrDULHzCRYb6S9ONIQlI.SlOwdd0uLFTN6Th65ZtEVLzZC"
 			name: "Darko Pranjić"
 		}
