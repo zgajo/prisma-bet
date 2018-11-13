@@ -6,6 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node .",
     "dev": "nodemon .",
+    "docker:setup": "cd prisma && docker-compose up -d",
     "build": "babel --ignore __tests__,__mocks__ --out-dir dist src",
     "test": "cd .. && npm run test:server"
   },

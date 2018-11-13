@@ -10,6 +10,7 @@
 		"dev:core": "concurrently --names \"server,client\" --prefix \"[{name}]\" --prefix-colors \"bgCyan.reset.bold,bgGreen.reset.bold\" \"npm run dev:server --silent\" \"npm run dev:client --silent\"",
 		"dev:client": "cd client && npm run start --silent",
 		"dev:server": "cd server && npm run dev --silent",
+		"docker:server": "cd server && npm run docker:setup",
 		"husky": "lint-staged && eslint --max-warnings 0 .",
 		"prisma:deploy": "cd server && prisma deploy && prisma deploy -e .env.test",
 		"start": "as-a PROD npm run start:core --silent",
