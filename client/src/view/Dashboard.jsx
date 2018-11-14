@@ -1,10 +1,11 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 import injectSheet from 'react-jss';
 
 import { Layout, Menu, Icon, Avatar } from 'antd';
 import SiteRoute from './Site/SiteRoute';
 import { readUser } from '../helpers/token';
+import { UsersAuthorization } from './Site/UsersAuthorization/UsersAuthorization';
 const { Sider } = Layout;
 
 const style = {
@@ -43,6 +44,8 @@ class Dashboard extends React.Component {
 			switch (true) {
 				case pathname.includes('players'):
 					return 'players';
+				case pathname.includes('users_auth'):
+					return 'users_auth';
 				default:
 					return 'main';
 			}
@@ -93,20 +96,29 @@ class Dashboard extends React.Component {
 						<Menu.Item key="main">
 							<Link to={'/'}>
 								<Icon type="book" />
-								<span>Klade</span>
+								<span>Sites</span>
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="players">
 							<Link to={`/players`}>
 								<Icon type="user" />
-								<span>Igrači</span>
+								<span>Players</span>
+							</Link>
+						</Menu.Item>
+						<Menu.Item key="users_auth">
+							<Link to={`/users_auth`}>
+								<Icon type="audit" />
+								<span>Users</span>
 							</Link>
 						</Menu.Item>
 					</Menu>
 				</Sider>
 				<Layout>
-					<Route exact path="/players" render={() => 'Hell'} />
-					<Route exact path="/" component={SiteRoute} />
+					<Switch>
+						<Route exact path="/" component={SiteRoute} />
+						<Route path="/players" render={() => 'Hell'} />
+						<Route path="/users_auth" component={UsersAuthorization} />
+					</Switch>
 				</Layout>
 			</Layout>
 		);

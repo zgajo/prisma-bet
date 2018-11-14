@@ -20,6 +20,7 @@ Docker and Prisma **have to be installed** on your computer to run Prisma on Doc
 
   1. [React](https://reactjs.org/)
   2. [Ant design](https://ant.design/)
+  3. [React table](https://react-table.js.org)
 
 - **TEST**
 
