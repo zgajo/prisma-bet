@@ -74,6 +74,8 @@ class NormalLoginForm extends Component {
 											const { token } = userLogin.data.login;
 
 											localStorage.setItem('authorization', token);
+
+											this.props.history.push('/');
 										} catch (error) {
 											if (error.graphQLErrors && error.graphQLErrors) {
 												error.graphQLErrors.forEach(({ message }) => {
