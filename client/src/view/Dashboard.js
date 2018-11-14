@@ -6,6 +6,41 @@ import SiteRoute from './Site/SiteRoute';
 const { Sider } = Layout;
 
 class Dashboard extends React.Component {
+	state = {
+		selected: 'main',
+	};
+
+	componentDidMount() {
+		const newSite = this.fetchCurrentSite();
+
+		if (this.state.selected !== newSite) {
+			this.setState({
+				selected: newSite,
+			});
+		}
+	}
+
+	componentDidUpdate() {
+		const newSite = this.fetchCurrentSite();
+
+		if (this.state.selected !== newSite) {
+			this.setState({
+				selected: newSite,
+			});
+		}
+	}
+
+	fetchCurrentSite() {
+		const { pathname } = this.props.location;
+
+		switch (true) {
+			case pathname.includes('players'):
+				return 'players';
+			default:
+				return 'main';
+		}
+	}
+
 	render() {
 		return (
 			<Layout style={{ height: '100vh' }}>
@@ -22,8 +57,8 @@ class Dashboard extends React.Component {
 						/*eslint-enable */
 					}}
 				>
-					<Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-						<Menu.Item key="site">
+					<Menu theme="dark" mode="inline" selectedKeys={[this.state.selected]}>
+						<Menu.Item key="main">
 							<Link to={'/'}>
 								<Icon type="book" />
 								<span>Klade</span>
@@ -39,7 +74,7 @@ class Dashboard extends React.Component {
 				</Sider>
 				<Layout>
 					<Route exact path="/players" render={() => 'Hell'} />
-					<Route exact path="/" render={SiteRoute} />
+					<Route exact path="/" component={SiteRoute} />
 				</Layout>
 			</Layout>
 		);

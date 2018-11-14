@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import injectSheet from 'react-jss';
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
 
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, message } from 'antd';
 
 const style = {
 	login_container: {
@@ -20,7 +22,7 @@ const style = {
 	},
 	login_page: {
 		background: 'url(background-form-login-1.png)',
-		'background-size': 'contain',
+		'background-size': 'cover',
 		display: 'flex',
 		height: '100%',
 	},
@@ -28,18 +30,26 @@ const style = {
 
 const FormItem = Form.Item;
 
-class NormalLoginForm extends Component {
-	handleSubmit = e => {
-		e.preventDefault();
-		this.props.form.validateFields((err, values) => {
-			if (!err) {
-				/*eslint-disable */
-
-				console.log('Received values of form: ', values);
+const login = gql`
+	mutation($username: String!, $password: String!) {
+		login(username: $username, password: $password) {
+			token
+			user {
+				id
+				username
+				name
 			}
-			console.log(err);
-			/*eslint-enable */
-		});
+		}
+	}
+`;
+
+class NormalLoginForm extends Component {
+	errorMsg = msg => {
+		message.error(msg);
+	};
+
+	warningMsg = msg => {
+		message.warning(msg);
 	};
 
 	render() {
@@ -48,33 +58,64 @@ class NormalLoginForm extends Component {
 		const { classes } = this.props;
 
 		return (
-			<div className={classes.login_page}>
-				<div className={classes.login_container}>
-					<Form onSubmit={this.handleSubmit} className={classes.login_form}>
-						<FormItem>
-							{getFieldDecorator('userName', {
-								rules: [{ message: 'Please input your username!', required: true }],
-							})(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />)}
-						</FormItem>
-						<FormItem>
-							{getFieldDecorator('password', {
-								rules: [{ message: 'Please input your Password!', required: true }],
-							})(
-								<Input
-									prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-									type="password"
-									placeholder="Password"
-								/>,
-							)}
-						</FormItem>
-						<FormItem>
-							<Button type="primary" htmlType="submit">
-								Login
-							</Button>
-						</FormItem>
-					</Form>
-				</div>
-			</div>
+			<Mutation mutation={login}>
+				{login => (
+					<div className={classes.login_page}>
+						<div className={classes.login_container}>
+							<Form
+								onSubmit={e => {
+									e.preventDefault();
+									this.props.form.validateFields(async (err, values) => {
+										if (err) return;
+
+										try {
+											const userLogin = await login({ variables: { ...values } });
+
+											const { token } = userLogin.data.login;
+
+											localStorage.setItem('authorization', token);
+										} catch (error) {
+											if (error.graphQLErrors && error.graphQLErrors) {
+												error.graphQLErrors.forEach(({ message }) => {
+													this.warningMsg(message);
+												});
+											}
+
+											if (error.networkError) {
+											}
+										}
+									});
+								}}
+								className={classes.login_form}
+							>
+								<FormItem>
+									{getFieldDecorator('username', {
+										rules: [{ message: 'Please input your username!', required: true }],
+									})(
+										<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />,
+									)}
+								</FormItem>
+								<FormItem>
+									{getFieldDecorator('password', {
+										rules: [{ message: 'Please input your Password!', required: true }],
+									})(
+										<Input
+											prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+											type="password"
+											placeholder="Password"
+										/>,
+									)}
+								</FormItem>
+								<FormItem>
+									<Button type="primary" htmlType="submit">
+										Login
+									</Button>
+								</FormItem>
+							</Form>
+						</div>
+					</div>
+				)}
+			</Mutation>
 		);
 	}
 }

@@ -1,18 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { ApolloProvider } from 'react-apollo';
 
 import * as serviceWorker from './serviceWorker';
 
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'import { Layout, Menu, Icon } from 'antd';
 import { MainRouter } from './router';
+import { client } from './apollo';
 
 const mountNode = document.getElementById('root');
 
 ReactDOM.render(
-	<Router>
-		<MainRouter />
-	</Router>,
+	<ApolloProvider client={client}>
+		<Router>
+			<MainRouter />
+		</Router>
+	</ApolloProvider>,
 	mountNode,
 );
 
