@@ -7,6 +7,7 @@ const { hash, compare } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const { APP_SECRET } = require('../utils');
+const path = require('path');
 
 const Mutation = {
 	login: async (_, { username, password }, ctx) => {
@@ -56,11 +57,36 @@ const Mutation = {
 			});
 
 			let message = {
+				attachments: [
+					{
+						cid: 'authorization_img',
+						contentDisposition: 'inline',
+						filename: 'email-authorization.jpg',
+						path: path.join(__dirname, '/images/email-authorization.jpg'),
+					},
+				],
 				from: process.env.OUTLOOK_MAIL,
-				html: '<p>HTML version of the message</p>',
+				html: `
+				<table align="center"  cellpadding="0" cellspacing="0" width="600">
+					<tr>
+						<td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0;">
+							<img src="cid:authorization_img" alt="Creating Email Magic" width="300" height="230" style="display: block;" />
+						</td>
+					</tr>
+					<tr>
+						<td bgcolor="#ffffff" style="padding: 10px">
+							Authorization needed for user: ${name}
+						</td>
+					</tr>
+					<tr>
+						<td bgcolor="#ffffff" style="padding: 10px">
+							<a href="${process.env.CLIENT_URL}/authorize_users">Respond</a>
+						</td>
+					</tr>
+				</table>
+				`,
 				subject: 'Creating new user',
 				// TODO: Add user info in body text
-				text: 'Plain text version of the message',
 				to: process.env.MAIN_EMAIL,
 			};
 
