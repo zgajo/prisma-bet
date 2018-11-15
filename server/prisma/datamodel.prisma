@@ -1,8 +1,11 @@
 type User {
 	# for any unique field it will create possibility to search in user query ba it. (WhereUniqueInput)
 	id: ID! @unique
-	username: String! @unique
-	password: String!
-	name: String!
+	accepted: Boolean! @default(value: false)
+	admin: Boolean! @default(value: false)
 	createdAt: DateTime!
+	email: String! @unique
+	name: String!
+	password: String!
+	username: String! @unique
 }

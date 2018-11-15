@@ -1,9 +1,20 @@
-const { rule, shield } = require('graphql-shield');
+const { rule, shield, and } = require('graphql-shield');
 const { sign } = require('jsonwebtoken');
 const { getUser, APP_SECRET } = require('../utils');
 
 const rules = {
-	isAuthenticated: rule()((parent, args, ctx) => {
+	isAdmin: rule()(async (_, __, ctx) => {
+		const user = getUser(ctx);
+		const userIdValid = !!user;
+
+		if (userIdValid) {
+			const userAdmin = await ctx.db.query.user({ where: { id: user.userId } });
+			return userAdmin.admin ? true : false;
+		}
+
+		return false;
+	}),
+	isAuthenticated: rule()((_, __, ctx) => {
 		const user = getUser(ctx);
 		const userIdValid = !!user;
 
@@ -24,6 +35,7 @@ const rules = {
 
 const permissions = shield({
 	Query: {
+		accept_waiting_users: and(rules.isAuthenticated, rules.isAdmin),
 		me: rules.isAuthenticated,
 	},
 });

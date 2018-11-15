@@ -9,5 +9,4 @@ hooks:
     - echo Deploying to - ${env:PRISMA_SERVER}:${env:PRISMA_PORT}/${env:PRISMA_SERVICE}/${env:NODE_ENV}
     - graphql get-schema --project prisma
     - graphql prepare
-    - prisma reset -f # Deleting everything from db
     - prisma seed

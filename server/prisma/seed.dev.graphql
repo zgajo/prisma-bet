@@ -1,9 +1,22 @@
 mutation {
-	createUser(
+	c1: createUser(
 		data: {
 			username: "dpranjic"
+			email: "darkopranjic.4@gmail.com"
 			password: "$2b$10$kG8XDGvTrDULHzCRYb6S9ONIQlI.SlOwdd0uLFTN6Th65ZtEVLzZC"
 			name: "Darko Pranjić"
+			admin: true
+			accepted: true
+		}
+	) {
+		id
+	}
+	c2: createUser(
+		data: {
+			username: "fake_user"
+			email: "zgajo@net.hr"
+			password: "$2b$10$kG8XDGvTrDULHzCRYb6S9ONIQlI.SlOwdd0uLFTN6Th65ZtEVLzZC"
+			name: "Testni user Pranjić"
 		}
 	) {
 		id
