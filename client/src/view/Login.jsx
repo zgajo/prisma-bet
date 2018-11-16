@@ -33,12 +33,9 @@ const FormItem = Form.Item;
 const login = gql`
 	mutation($username: String!, $password: String!) {
 		login(username: $username, password: $password) {
+			success
+			message
 			token
-			user {
-				id
-				username
-				name
-			}
 		}
 	}
 `;
@@ -52,6 +49,33 @@ class NormalLoginForm extends Component {
 		message.warning(msg);
 	};
 
+	submit = loginMutation => e => {
+		e.preventDefault();
+
+		this.props.form.validateFields(async (err, values) => {
+			if (err) return;
+
+			try {
+				const userLogin = await loginMutation({ variables: { ...values } });
+
+				const { token } = userLogin.data.login;
+
+				localStorage.setItem('authorization', token);
+
+				this.props.history.push('/');
+			} catch (error) {
+				if (error.graphQLErrors && error.graphQLErrors) {
+					error.graphQLErrors.forEach(({ message }) => {
+						this.warningMsg(message);
+					});
+				}
+
+				if (error.networkError) {
+				}
+			}
+		});
+	};
+
 	render() {
 		const { getFieldDecorator } = this.props.form;
 
@@ -62,34 +86,7 @@ class NormalLoginForm extends Component {
 				{login => (
 					<div className={classes.login_page}>
 						<div className={classes.login_container}>
-							<Form
-								onSubmit={e => {
-									e.preventDefault();
-									this.props.form.validateFields(async (err, values) => {
-										if (err) return;
-
-										try {
-											const userLogin = await login({ variables: { ...values } });
-
-											const { token } = userLogin.data.login;
-
-											localStorage.setItem('authorization', token);
-
-											this.props.history.push('/');
-										} catch (error) {
-											if (error.graphQLErrors && error.graphQLErrors) {
-												error.graphQLErrors.forEach(({ message }) => {
-													this.warningMsg(message);
-												});
-											}
-
-											if (error.networkError) {
-											}
-										}
-									});
-								}}
-								className={classes.login_form}
-							>
+							<Form onSubmit={this.submit(login)} className={classes.login_form}>
 								<FormItem>
 									{getFieldDecorator('username', {
 										rules: [{ message: 'Please input your username!', required: true }],
