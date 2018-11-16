@@ -27,6 +27,7 @@ const columns = [
 	},
 ];
 
+// TODO: Implement pagination over here
 const usersQuery = gql`
 	{
 		users {
