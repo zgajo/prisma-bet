@@ -1,0 +1,54 @@
+#root {
+	height: 100%;
+}
+
+.app-list {
+	list-style-type: none;
+	padding: 0;
+	a {
+		color: #1890ff;
+		background-color: transparent;
+		outline: none;
+		cursor: pointer;
+		line-height: 30px;
+		padding: 0 8px;
+	}
+}
+
+.display-flex {
+	display: flex;
+}
+
+.trigger {
+	font-size: 18px;
+	line-height: 64px;
+	padding: 0 24px;
+	cursor: pointer;
+	transition: color 0.3s;
+}
+
+.trigger:hover {
+	color: #1890ff;
+}
+
+.log-reg-page {
+	background: url('./images/background-form-login-1.png');
+	background-size: cover;
+	display: flex;
+	height: 100%;
+}
+
+.log-reg-container {
+	align-items: center;
+	background: #fbfbfb;
+	border: 1px solid #d9d9d9;
+	border-radius: 6px;
+	display: flex;
+	margin: auto;
+	padding: 24px;
+	width: 350px;
+	min-height: 350px;
+	form {
+		width: 100%;
+	}
+}

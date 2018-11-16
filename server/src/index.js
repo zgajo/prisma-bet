@@ -12,6 +12,8 @@ const server = new GraphQLServer({
 	typeDefs,
 });
 
+//TODO: add audit
+
 const serverOptions = {
 	debug: true,
 	endpoint: '/graphql',
