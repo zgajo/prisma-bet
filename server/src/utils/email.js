@@ -1,19 +1,5 @@
-const { verify } = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const path = require('path');
-
-const APP_SECRET = 'appsecret321';
-
-function getUser(context) {
-	const Authorization = context && context.request && context.request.headers && context.request.headers.authorization;
-
-	if (Authorization) {
-		const token = Authorization.replace('Bearer ', '');
-		const verifiedToken = verify(token, APP_SECRET);
-
-		return verifiedToken && verifiedToken.userId && verifiedToken.name && verifiedToken;
-	}
-}
 
 function setupMail() {
 	return nodemailer.createTransport({
@@ -101,7 +87,5 @@ async function sendEmailNewUserToAdmin(name, email) {
 }
 
 module.exports = {
-	APP_SECRET,
-	getUser,
 	sendEmailNewUserToAdmin,
 };

@@ -1,6 +1,6 @@
 const { rule, shield, and } = require('graphql-shield');
 const { sign } = require('jsonwebtoken');
-const { getUser, APP_SECRET } = require('../utils');
+const { getUser, APP_SECRET, tokenCreationData } = require('../utils/token');
 
 const rules = {
 	isAdmin: rule()(async (_, __, ctx) => {
@@ -8,7 +8,7 @@ const rules = {
 		const userIdValid = !!user;
 
 		if (userIdValid) {
-			const userAdmin = await ctx.db.query.user({ where: { id: user.userId } });
+			const userAdmin = await ctx.db.query.user({ where: { id: user.id } });
 			return userAdmin.admin ? true : false;
 		}
 
@@ -21,11 +21,18 @@ const rules = {
 		if (userIdValid) {
 			ctx.response.set(
 				'authorization',
-				// change iat only if we're in  test enviroment
-				// Doing this because if test token is issued at same second as this creation, it will generate same token and test will break
-				sign({ ...(process.env.NODE_ENV === 'test' && { iat: new Date() - 1 }), userId: user.userId }, APP_SECRET, {
-					expiresIn: '1h',
-				}),
+				sign(
+					{
+						// change iat only if we're in  test enviroment
+						// Doing this because if test token is issued at same second as this creation, it will generate same token and test will break
+						...(process.env.NODE_ENV === 'test' && { iat: new Date() - 1 }),
+						...tokenCreationData(user),
+					},
+					APP_SECRET,
+					{
+						expiresIn: '1h',
+					},
+				),
 			);
 		}
 

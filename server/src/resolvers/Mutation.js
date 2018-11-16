@@ -1,7 +1,8 @@
 const { hash, compare } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
-const { APP_SECRET } = require('../utils');
-const { sendEmailNewUserToAdmin } = require('../utils');
+const { APP_SECRET, tokenCreationData } = require('../utils/token');
+const { sendEmailNewUserToAdmin } = require('../utils/email');
+
 const Mutation = {
 	login: async (_, { username, password }, ctx) => {
 		const user = await ctx.db.query.user({ where: { username } });
@@ -20,7 +21,7 @@ const Mutation = {
 
 		return {
 			success: true,
-			token: sign({ name: user.name, userId: user.id }, APP_SECRET, { expiresIn: '1h' }),
+			token: sign({ ...tokenCreationData(user) }, APP_SECRET, { expiresIn: '1h' }),
 		};
 	},
 	signup: async (_, { name, username, password, email }, ctx) => {

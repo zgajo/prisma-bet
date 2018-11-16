@@ -2,6 +2,7 @@ scalar DateTime
 
 type User {
 	id: ID!
+	admin: Boolean!
 	createdAt: DateTime!
 	email: String!
 	name: String!
