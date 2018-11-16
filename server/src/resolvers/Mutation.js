@@ -1,7 +1,7 @@
 const { hash, compare } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
 const { APP_SECRET } = require('../utils');
-const { sendNewUserMail } = require('../utils');
+const { sendEmailNewUserToAdmin } = require('../utils');
 const Mutation = {
 	login: async (_, { username, password }, ctx) => {
 		const user = await ctx.db.query.user({ where: { username } });
@@ -24,10 +24,11 @@ const Mutation = {
 		};
 	},
 	signup: async (_, { name, username, password, email }, ctx) => {
+		let createdUser = null;
 		try {
 			const hashedPassword = await hash(password, 10);
 
-			await ctx.db.mutation.createUser({
+			createdUser = await ctx.db.mutation.createUser({
 				data: {
 					email,
 					name,
@@ -36,15 +37,24 @@ const Mutation = {
 				},
 			});
 
-			// TODO: If message sending fails, try to repeat sending 5 times (once every min), if it's not sent delete created user from db and notify user to try signup little later
+			// If message sending fails, try to repeat sending 3 times, if it's not sent delete created user from db and notify user to try signup little later
 			// Notifiying admin about new user creation
-			await sendNewUserMail(name, email);
+			await sendEmailNewUserToAdmin(name, email, createdUser.id);
 
 			return {
 				message: 'Message successfully sent to admin. You will receive email for next steps.',
 				success: true,
 			};
 		} catch (error) {
+			// Delete created user (email has not been sent)
+			if (createdUser) {
+				await ctx.db.mutation.deleteUser({
+					where: {
+						id: createdUser.id,
+					},
+				});
+			}
+
 			return {
 				message: error.message,
 				success: false,

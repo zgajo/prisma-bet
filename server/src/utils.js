@@ -30,7 +30,7 @@ function setupMail() {
 	});
 }
 
-async function sendNewUserMail(name, email) {
+async function sendNewUserMail(name, email, id) {
 	let message = {
 		attachments: [
 			{
@@ -46,7 +46,7 @@ async function sendNewUserMail(name, email) {
 		<table align="center"  cellpadding="0" cellspacing="0" width="600">
 			<tr>
 				<td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0;">
-					<img src="cid:authorization_img" alt="Creating Email Magic" width="300" height="230" style="display: block;" />
+					<img src="cid:authorization_img" alt="Creating New User" height="300" style="display: block;" />
 				</td>
 			</tr>
 			<tr>
@@ -56,7 +56,7 @@ async function sendNewUserMail(name, email) {
 			</tr>
 			<tr>
 				<td bgcolor="#ffffff" style="padding: 10px">
-					<a href="${process.env.CLIENT_URL}/authorize_users">Respond</a>
+					<a href="${process.env.CLIENT_URL}/authorize_users/edit/${id}">Respond</a>
 				</td>
 			</tr>
 		</table>
@@ -72,13 +72,36 @@ async function sendNewUserMail(name, email) {
 
 		return Promise.resolve(response);
 	} catch (error) {
-		// TODO: Return object which will tell that email is the error
-		return Promise.reject(error);
+		return Promise.reject({
+			errorType: 'email',
+			message: 'There was a problem with sending email to admin, please try to sign up little later',
+		});
 	}
+}
+
+async function sendEmailNewUserToAdmin(name, email) {
+	// On if we get less than 3 errors, try to send message again
+	let errorCount = 0;
+	let successful = false;
+	let response = null;
+
+	do {
+		try {
+			response = await sendNewUserMail(name, email);
+			successful = true;
+		} catch (error) {
+			successful = false;
+			++errorCount;
+			response = error;
+		}
+	} while (errorCount < 3 && !successful);
+
+	if (response.errorType === 'email') return Promise.reject(response);
+	return Promise.resolve(response);
 }
 
 module.exports = {
 	APP_SECRET,
 	getUser,
-	sendNewUserMail,
+	sendEmailNewUserToAdmin,
 };
