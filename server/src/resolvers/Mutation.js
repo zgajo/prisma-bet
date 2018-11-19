@@ -3,6 +3,9 @@ const { sign } = require('jsonwebtoken');
 const { APP_SECRET, tokenCreationData } = require('../utils/token');
 const { sendEmailNewUserToAdmin } = require('../utils/email');
 
+// TODO: Accept / decline resolver (permission ifAdmin)
+
+//TODO: Bet site -> bet_site_user <- User // many to many
 const Mutation = {
 	login: async (_, { username, password }, ctx) => {
 		const user = await ctx.db.query.user({ where: { username } });

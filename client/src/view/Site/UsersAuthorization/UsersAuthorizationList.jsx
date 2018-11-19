@@ -36,7 +36,7 @@ const usersQuery = gql`
 		}
 	}
 `;
-
+// TODO: accept / decline users
 export const UsersAuthorizationList = injectSheet(style)(props => {
 	const { classes } = props;
 	return (
