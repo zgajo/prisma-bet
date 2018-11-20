@@ -6,23 +6,26 @@ import { Link } from 'react-router-dom';
 
 const FormItem = Form.Item;
 
-const loginMutation = gql`
-	mutation($username: String!, $password: String!) {
-		login(username: $username, password: $password) {
+const signupMutation = gql`
+	mutation($email: String!, $name: String!, $password: String!, $username: String!) {
+		signup(name: $name, username: $username, password: $password, email: $email) {
 			success
 			message
-			token
 		}
 	}
 `;
 
-class NormalLoginForm extends Component {
+class NormalRegisterForm extends Component {
 	errorMsg = msg => {
 		message.error(msg);
 	};
 
 	warningMsg = msg => {
 		message.warning(msg);
+	};
+
+	successMsg = msg => {
+		message.success(msg);
 	};
 
 	submit = mutation => e => {
@@ -32,13 +35,16 @@ class NormalLoginForm extends Component {
 			if (err) return;
 
 			try {
-				const userLogin = await mutation({ variables: { ...values } });
+				const userSignup = await mutation({ variables: { ...values } });
 
-				const { token, success } = userLogin.data.login;
+				const { success, message } = userSignup.data.signup;
 
-				if (!success) return;
+				if (!success) {
+					// Show error
+					return this.errorMsg(message);
+				}
 
-				localStorage.setItem('authorization', token);
+				this.successMsg(message);
 				this.props.history.push('/');
 			} catch (error) {
 				if (error.graphQLErrors && error.graphQLErrors) {
@@ -57,11 +63,21 @@ class NormalLoginForm extends Component {
 		const { getFieldDecorator } = this.props.form;
 
 		return (
-			<Mutation mutation={loginMutation}>
-				{(login, { loading }) => (
+			<Mutation mutation={signupMutation}>
+				{(signup, { loading }) => (
 					<div className="log-reg-page">
 						<div className={'log-reg-container'}>
-							<Form onSubmit={this.submit(login)}>
+							<Form onSubmit={this.submit(signup)}>
+								<FormItem>
+									{getFieldDecorator('email', {
+										rules: [{ message: 'Please input your email!', required: true }],
+									})(<Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />)}
+								</FormItem>
+								<FormItem>
+									{getFieldDecorator('name', {
+										rules: [{ message: 'Please input your name!', required: true }],
+									})(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Name" />)}
+								</FormItem>
 								<FormItem>
 									{getFieldDecorator('username', {
 										rules: [{ message: 'Please input your username!', required: true }],
@@ -71,7 +87,7 @@ class NormalLoginForm extends Component {
 								</FormItem>
 								<FormItem>
 									{getFieldDecorator('password', {
-										rules: [{ message: 'Please input your Password!', required: true }],
+										rules: [{ message: 'Please input your Password!', required: true }, { min: 6 }, { max: 20 }],
 									})(
 										<Input
 											prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -88,13 +104,13 @@ class NormalLoginForm extends Component {
 											</Button>
 										) : (
 											<Button type="primary" htmlType="submit">
-												Login
+												Register
 											</Button>
 										)}
 
 										<ul className="app-list">
 											<li>
-												<Link to="/register">Register</Link>
+												<Link to="/login">Login</Link>
 											</li>
 										</ul>
 									</span>
@@ -108,6 +124,6 @@ class NormalLoginForm extends Component {
 	}
 }
 
-const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
+const RegisterForm = Form.create()(NormalRegisterForm);
 
-export default WrappedNormalLoginForm;
+export default RegisterForm;

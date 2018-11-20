@@ -38,6 +38,13 @@ const Mutation = {
 	signup: async (_, { name, username, password, email }, ctx) => {
 		let createdUser = null;
 		try {
+			if (!password || password.length < 6 || password.length > 20) {
+				return {
+					message: 'Password is not in required characters range',
+					success: false,
+				};
+			}
+
 			const hashedPassword = await hash(password, 10);
 
 			createdUser = await ctx.db.mutation.createUser({

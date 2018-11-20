@@ -5,7 +5,7 @@ import injectSheet from 'react-jss';
 import { Layout, Menu, Icon, Avatar } from 'antd';
 import SiteRoute from './Site/SiteRoute';
 import { readUser } from '../helpers/token';
-import { UsersAuthorization } from './Site/UsersAuthorization/UsersAuthorization';
+import { UsersAuthorization } from './UsersAuthorization/UsersAuthorization';
 const { Sider } = Layout;
 
 const style = {

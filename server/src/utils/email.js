@@ -23,7 +23,7 @@ async function sendNewUserMail(name, email, id) {
 				cid: 'authorization_img',
 				contentDisposition: 'inline',
 				filename: 'email-authorization.jpg',
-				path: path.join(__dirname, '/images/email-authorization.jpg'),
+				path: path.join(__dirname, '/../images/email-authorization.jpg'),
 			},
 		],
 		from: process.env.OUTLOOK_MAIL,
