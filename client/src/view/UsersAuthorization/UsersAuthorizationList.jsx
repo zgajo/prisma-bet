@@ -21,12 +21,11 @@ const style = {
 
 const respondUsersQuery = gql`
 	{
-		waiting_users {
+		waitingUsers {
 			id
 			username
 			name
 			email
-			accepted
 		}
 	}
 `;
@@ -81,12 +80,13 @@ class UsersAuthorizationList extends Component {
 
 	respond = (accepted, userId) => async () => {
 		try {
-			await this.props.mutation({
+			await this.props.mutate({
 				variables: {
 					accepted,
 					userId,
 				},
 			});
+			// TODO: Delete user from cache on successfull response
 		} catch (error) {}
 	};
 
@@ -103,7 +103,7 @@ class UsersAuthorizationList extends Component {
 						<Fragment>
 							<h3>Waiting users</h3>
 							<ReactTableCustom
-								data={(data && data.waiting_users) || []}
+								data={(data && data.waitingUsers) || []}
 								columns={this.state.columns}
 								defaultPageSize={5}
 								className="-striped -highlight"

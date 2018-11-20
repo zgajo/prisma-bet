@@ -10,7 +10,7 @@ type User {
 }
 
 type Query {
-	accept_waiting_users: [User!]!
+	waitingUsers: [User!]!
 	me: User
 	users: [User!]!
 }

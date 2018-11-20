@@ -32,7 +32,7 @@
 }
 
 .log-reg-page {
-	background: url('./images/background-form-login-1.png');
+	background: url('../images/background-form-login-1.png');
 	background-size: cover;
 	display: flex;
 	height: 100%;
@@ -51,4 +51,15 @@
 	form {
 		width: 100%;
 	}
+}
+
+.button-success {
+	background-color: #23d160;
+	border-color: transparent;
+	color: #fff;
+}
+.button-success:hover {
+	background-color: #22c65b;
+	border-color: transparent;
+	color: #fff;
 }

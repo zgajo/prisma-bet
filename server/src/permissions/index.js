@@ -8,7 +8,8 @@ const rules = {
 		const userIdValid = !!user;
 
 		if (userIdValid) {
-			const userAdmin = await ctx.db.query.user({ where: { id: user.id } });
+			const userAdmin = await ctx.db.query.user({ where: { id: user } });
+
 			return userAdmin.admin ? true : false;
 		}
 
@@ -17,7 +18,6 @@ const rules = {
 	isAuthenticated: rule()((_, __, ctx) => {
 		const user = getUser(ctx);
 		const userIdValid = !!user;
-
 		if (userIdValid) {
 			ctx.response.set(
 				'authorization',
@@ -45,8 +45,8 @@ const permissions = shield({
 		responseWaitingUser: and(rules.isAuthenticated, rules.isAdmin),
 	},
 	Query: {
-		accept_waiting_users: and(rules.isAuthenticated, rules.isAdmin),
 		me: rules.isAuthenticated,
+		waitingUsers: and(rules.isAuthenticated, rules.isAdmin),
 	},
 });
 

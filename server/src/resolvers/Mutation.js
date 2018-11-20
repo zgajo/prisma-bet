@@ -3,8 +3,6 @@ const { sign } = require('jsonwebtoken');
 const { APP_SECRET, tokenCreationData } = require('../utils/token');
 const { sendEmailNewUserToAdmin } = require('../utils/email');
 
-// TODO: Accept / decline resolver (permission ifAdmin)
-
 //TODO: Bet site -> bet_site_user <- User // many to many
 const Mutation = {
 	login: async (_, { username, password }, ctx) => {
@@ -30,6 +28,8 @@ const Mutation = {
 	responseWaitingUser: async (_, { userId, accepted }, { db }) => {
 		try {
 			await db.mutation.updateUser({ data: { accepted }, where: { id: userId } });
+
+			//TODO: send mail to user on response
 			return true;
 		} catch (error) {
 			return false;
