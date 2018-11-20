@@ -8,7 +8,7 @@ function getUser(context) {
 		const token = Authorization.replace('Bearer ', '');
 		const verifiedToken = verify(token, APP_SECRET);
 
-		return verifiedToken && verifiedToken.id;
+		return verifiedToken;
 	}
 }
 

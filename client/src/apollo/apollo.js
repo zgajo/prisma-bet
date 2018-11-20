@@ -14,16 +14,6 @@ const cache = new InMemoryCache();
 
 const httpLinkWithMiddleware = from([getTokenMiddleware, setTokenAfterware.concat(httpLink)]);
 
-// FIXME: If I include this link( it doesn't work ), need to include http middleware to tokens
-// const link = split(
-// 	// split based on operation type
-// 	({ query }) => {
-// 		const { kind, operation } = getMainDefinition(query);
-// 		return kind === 'OperationDefinition' && operation === 'subscription';
-// 	},
-// 	httpLinkWithMiddleware,
-// );
-
 export const client = new ApolloClient({
 	cache,
 	dataIdFromObject: o => o.id,
