@@ -6,6 +6,8 @@ import { ApolloProvider } from 'react-apollo';
 import * as serviceWorker from './serviceWorker';
 
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'import { Layout, Menu, Icon } from 'antd';
+import './styles/styles.scss';
+
 import { MainRouter } from './router';
 import { client } from './apollo';
 

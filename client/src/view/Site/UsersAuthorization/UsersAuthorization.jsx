@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import { Layout, Breadcrumb } from 'antd';
-import { UsersAuthorizationList } from './UsersAuthorizationList';
+import UsersAuthorizationList from './UsersAuthorizationList';
 const { Content } = Layout;
 
 export const UsersAuthorization = props => {
