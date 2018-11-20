@@ -41,6 +41,9 @@ const rules = {
 };
 
 const permissions = shield({
+	Mutation: {
+		responseWaitingUser: and(rules.isAuthenticated, rules.isAdmin),
+	},
 	Query: {
 		accept_waiting_users: and(rules.isAuthenticated, rules.isAdmin),
 		me: rules.isAuthenticated,

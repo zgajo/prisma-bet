@@ -27,6 +27,14 @@ const Mutation = {
 			token: sign({ ...tokenCreationData(user) }, APP_SECRET, { expiresIn: '1h' }),
 		};
 	},
+	responseWaitingUser: async (_, { userId, accepted }, { db }) => {
+		try {
+			await db.mutation.updateUser({ data: { accepted }, where: { id: userId } });
+			return true;
+		} catch (error) {
+			return false;
+		}
+	},
 	signup: async (_, { name, username, password, email }, ctx) => {
 		let createdUser = null;
 		try {

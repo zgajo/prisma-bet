@@ -18,6 +18,7 @@ type Query {
 type Mutation {
 	login(password: String!, username: String!): LoginResponse!
 	signup(email: String!, name: String!, password: String!, username: String!): SignupResponse!
+	responseWaitingUser(userId: ID!, accepted: Boolean!): Boolean!
 }
 
 interface AuthPayload {
