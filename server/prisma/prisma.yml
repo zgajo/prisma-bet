@@ -1,5 +1,6 @@
 endpoint: ${env:PRISMA_SERVER}:${env:PRISMA_PORT}/${env:PRISMA_SERVICE}/${env:NODE_ENV}
 datamodel: datamodel.prisma
+secret: ${env:PRISMA_API_SECRET}
 
 seed:
   import: seed.${env:NODE_ENV}.graphql
