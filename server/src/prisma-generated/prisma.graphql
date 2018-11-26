@@ -1,5 +1,5 @@
 # source: http://localhost:4466/klada/dev
-# timestamp: Tue Nov 20 2018 21:39:37 GMT+0100 (Central European Standard Time)
+# timestamp: Mon Nov 26 2018 16:31:31 GMT+0100 (Central European Standard Time)
 
 type AggregateUser {
   count: Int!
@@ -87,6 +87,8 @@ type User implements Node {
   name: String!
   password: String!
   username: String!
+  resetPasswordToken: String
+  resetPasswordExpires: String
 }
 
 """A connection to a list of items."""
@@ -106,6 +108,8 @@ input UserCreateInput {
   name: String!
   password: String!
   username: String!
+  resetPasswordToken: String
+  resetPasswordExpires: String
 }
 
 """An edge in a connection."""
@@ -134,6 +138,10 @@ enum UserOrderByInput {
   password_DESC
   username_ASC
   username_DESC
+  resetPasswordToken_ASC
+  resetPasswordToken_DESC
+  resetPasswordExpires_ASC
+  resetPasswordExpires_DESC
   updatedAt_ASC
   updatedAt_DESC
 }
@@ -147,6 +155,8 @@ type UserPreviousValues {
   name: String!
   password: String!
   username: String!
+  resetPasswordToken: String
+  resetPasswordExpires: String
 }
 
 type UserSubscriptionPayload {
@@ -195,6 +205,8 @@ input UserUpdateInput {
   name: String
   password: String
   username: String
+  resetPasswordToken: String
+  resetPasswordExpires: String
 }
 
 input UserWhereInput {
@@ -436,6 +448,86 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   username_not_ends_with: String
+  resetPasswordToken: String
+
+  """All values that are not equal to given value."""
+  resetPasswordToken_not: String
+
+  """All values that are contained in given list."""
+  resetPasswordToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  resetPasswordToken_not_in: [String!]
+
+  """All values less than the given value."""
+  resetPasswordToken_lt: String
+
+  """All values less than or equal the given value."""
+  resetPasswordToken_lte: String
+
+  """All values greater than the given value."""
+  resetPasswordToken_gt: String
+
+  """All values greater than or equal the given value."""
+  resetPasswordToken_gte: String
+
+  """All values containing the given string."""
+  resetPasswordToken_contains: String
+
+  """All values not containing the given string."""
+  resetPasswordToken_not_contains: String
+
+  """All values starting with the given string."""
+  resetPasswordToken_starts_with: String
+
+  """All values not starting with the given string."""
+  resetPasswordToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  resetPasswordToken_ends_with: String
+
+  """All values not ending with the given string."""
+  resetPasswordToken_not_ends_with: String
+  resetPasswordExpires: String
+
+  """All values that are not equal to given value."""
+  resetPasswordExpires_not: String
+
+  """All values that are contained in given list."""
+  resetPasswordExpires_in: [String!]
+
+  """All values that are not contained in given list."""
+  resetPasswordExpires_not_in: [String!]
+
+  """All values less than the given value."""
+  resetPasswordExpires_lt: String
+
+  """All values less than or equal the given value."""
+  resetPasswordExpires_lte: String
+
+  """All values greater than the given value."""
+  resetPasswordExpires_gt: String
+
+  """All values greater than or equal the given value."""
+  resetPasswordExpires_gte: String
+
+  """All values containing the given string."""
+  resetPasswordExpires_contains: String
+
+  """All values not containing the given string."""
+  resetPasswordExpires_not_contains: String
+
+  """All values starting with the given string."""
+  resetPasswordExpires_starts_with: String
+
+  """All values not starting with the given string."""
+  resetPasswordExpires_not_starts_with: String
+
+  """All values ending with the given string."""
+  resetPasswordExpires_ends_with: String
+
+  """All values not ending with the given string."""
+  resetPasswordExpires_not_ends_with: String
 }
 
 input UserWhereUniqueInput {

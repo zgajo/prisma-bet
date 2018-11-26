@@ -17,8 +17,9 @@ type Query {
 
 type Mutation {
 	login(password: String!, username: String!): LoginResponse!
-	signup(email: String!, name: String!, password: String!, username: String!): SignupResponse!
+	signup(email: String!, name: String!, password: String!, username: String!): ResolverResponse!
 	responseWaitingUser(userId: ID!, accepted: Boolean!): Boolean!
+	forgotPassword(email: String!): ResolverResponse!
 }
 
 interface AuthPayload {
@@ -26,7 +27,7 @@ interface AuthPayload {
 	success: Boolean!
 }
 
-type SignupResponse implements AuthPayload {
+type ResolverResponse implements AuthPayload {
 	message: String
 	success: Boolean!
 }

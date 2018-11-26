@@ -1,10 +1,48 @@
 const { hash, compare } = require('bcrypt');
 const { sign } = require('jsonwebtoken');
+const crypto = require('crypto');
+
 const { APP_SECRET, tokenCreationData } = require('../utils/token');
-const { sendEmailNewUserToAdmin } = require('../utils/email');
+const { sendEmailNewUserToAdmin, resetTokenMail } = require('../utils/email');
 
 //TODO: Bet site -> bet_site_user <- User // many to many
 const Mutation = {
+	forgotPassword: async (_, { email }, ctx) => {
+		try {
+			const user = await ctx.db.query.user({ where: { email } });
+
+			if (!user) {
+				return {
+					message: 'User with sent email not found',
+					success: false,
+				};
+			}
+
+			const resetPasswordToken = crypto.randomBytes(20).toString('hex');
+			let resetPasswordExpires = new Date();
+			resetPasswordExpires.setHours(resetPasswordExpires.getHours() + 1);
+
+			await ctx.db.mutation.updateUser({
+				data: {
+					resetPasswordExpires,
+					resetPasswordToken,
+				},
+				where: { id: user.id },
+			});
+
+			await resetTokenMail(user, resetPasswordToken);
+
+			return {
+				message: 'Recovery mail sent',
+				success: true,
+			};
+		} catch (error) {
+			return {
+				message: error.message,
+				success: false,
+			};
+		}
+	},
 	login: async (_, { username, password }, ctx) => {
 		const user = await ctx.db.query.user({ where: { username } });
 

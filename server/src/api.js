@@ -10,7 +10,7 @@ const db = new Prisma({
 	endpoint: `${process.env.PRISMA_SERVER}:${process.env.PRISMA_PORT}/${process.env.PRISMA_SERVICE}/${
 		process.env.NODE_ENV
 	}`,
-	secret: process.env.PRISMA_API_SECRET,
+	...(process.env.PRISMA_API_SECRET && { secret: process.env.PRISMA_API_SECRET }),
 	typeDefs: fs.readFileSync(__dirname + '/prisma-generated/prisma.graphql', 'utf8'),
 });
 

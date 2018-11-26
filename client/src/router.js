@@ -19,6 +19,8 @@ export const MainRouter = () => (
 	<Switch>
 		<RegisterLoginMiddleware path="/login" component={Login} />
 		<RegisterLoginMiddleware path="/register" component={Register} />
+		<RegisterLoginMiddleware path="/resetPassword" component={Register} />
+		<RegisterLoginMiddleware path="/resetPassword/:token" component={Register} />
 		<RouteMiddleware path="/" component={Dashboard} />
 	</Switch>
 );
