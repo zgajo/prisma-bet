@@ -99,6 +99,13 @@ class NormalLoginForm extends Component {
 										</ul>
 									</span>
 								</FormItem>
+								<FormItem>
+									<ul className="app-list">
+										<li>
+											<Link to="/reset_password">Forgot password?</Link>
+										</li>
+									</ul>
+								</FormItem>
 							</Form>
 						</div>
 					</div>

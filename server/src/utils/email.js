@@ -94,7 +94,7 @@ const resetTokenMail = async (user, token) => {
 			</tr>
 			<tr>
 				<td bgcolor="#ffffff" style="padding: 10px">
-					<a href="${process.env.CLIENT_URL}/resetPassword/${token}">Respond</a>
+					<a href="${process.env.CLIENT_URL}/reset_password/${token}">Confirm</a>
 				</td>
 			</tr>
 		</table>

@@ -13,7 +13,7 @@ const Mutation = {
 
 			if (!user) {
 				return {
-					message: 'User with sent email not found',
+					message: 'Email not found',
 					success: false,
 				};
 			}

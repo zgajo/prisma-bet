@@ -6,6 +6,7 @@ import Dashboard from './view/Dashboard';
 import Login from './view/Login';
 import { isAuth } from './helpers/token';
 import Register from './view/Register';
+import ResetPassword from './view/ResetPassword';
 
 const RouteMiddleware = ({ component: Component, ...rest }) => (
 	<Route {...rest} render={props => (isAuth() ? <Component {...props} /> : <Redirect to={{ pathname: '/login' }} />)} />
@@ -19,8 +20,8 @@ export const MainRouter = () => (
 	<Switch>
 		<RegisterLoginMiddleware path="/login" component={Login} />
 		<RegisterLoginMiddleware path="/register" component={Register} />
-		<RegisterLoginMiddleware path="/resetPassword" component={Register} />
-		<RegisterLoginMiddleware path="/resetPassword/:token" component={Register} />
+		<RegisterLoginMiddleware path="/reset_password" component={ResetPassword} />
+		<RegisterLoginMiddleware path="/reset_password/:token" component={Register} />
 		<RouteMiddleware path="/" component={Dashboard} />
 	</Switch>
 );
