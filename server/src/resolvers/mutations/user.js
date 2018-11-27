@@ -3,7 +3,7 @@ const { sign } = require('jsonwebtoken');
 const crypto = require('crypto');
 
 const { APP_SECRET, tokenCreationData } = require('../../utils/token');
-const { sendEmailNewUserToAdmin, resetTokenMail } = require('../../utils/email');
+const { sendEmailNewUserToAdmin, resetTokenMail, sendResponseEmailToUser } = require('../../utils/email');
 
 //TODO: Bet site -> bet_site_user <- User // many to many
 
@@ -110,11 +110,29 @@ module.exports = {
 			token: sign({ ...tokenCreationData(user) }, APP_SECRET, { expiresIn: '1h' }),
 		};
 	},
-	responseWaitingUser: async (_, { userId, accepted }, { db }) => {
+	responseToWaitingUser: async (_, { userId, accepted }, { db }) => {
 		try {
+			const user = await db.query.user({ where: { id: userId } });
+
+			if (!user) return false;
+
+			if (!accepted) {
+				await db.mutation.deleteUser({
+					where: {
+						id: user.id,
+					},
+				});
+
+				// Send reject email
+				sendResponseEmailToUser(user, accepted);
+				return true;
+			}
+
 			await db.mutation.updateUser({ data: { accepted }, where: { id: userId } });
 
-			//TODO: send mail to user on response
+			// send accept mail to user
+			sendResponseEmailToUser(user, accepted);
+
 			return true;
 		} catch (error) {
 			return false;

@@ -1,9 +1,9 @@
 import React, { Fragment, Component } from 'react';
 import ReactTableCustom from '../../components/UI/ReactTableCustom';
 import gql from 'graphql-tag';
-import { Query, graphql } from 'react-apollo';
+import { graphql, Query } from 'react-apollo';
 
-import { Spin, Button, Popover } from 'antd';
+import { Spin, Button, message, Popover } from 'antd';
 
 import injectSheet from 'react-jss';
 
@@ -19,7 +19,7 @@ const style = {
 	},
 };
 
-const respondUsersQuery = gql`
+const waitingUsersQuery = gql`
 	{
 		waitingUsers {
 			id
@@ -30,9 +30,9 @@ const respondUsersQuery = gql`
 	}
 `;
 
-const mutationResponseWaitingUsers = gql`
+const mutationResponseToWaitingUsers = gql`
 	mutation($userId: ID!, $accepted: Boolean!) {
-		responseWaitingUser(userId: $userId, accepted: $accepted)
+		responseToWaitingUser(userId: $userId, accepted: $accepted)
 	}
 `;
 
@@ -78,23 +78,47 @@ class UsersAuthorizationList extends Component {
 		],
 	};
 
+	warningMsg = msg => {
+		message.warning(msg);
+	};
+
 	respond = (accepted, userId) => async () => {
 		try {
 			await this.props.mutate({
+				// Delete user from cache on successfull response
+				update: (store, { data: { responseToWaitingUser } }) => {
+					if (!responseToWaitingUser) {
+						return this.warningMsg('Something went wrong');
+					}
+
+					// Read the data from our cache for this query.
+					const data = store.readQuery({ query: waitingUsersQuery });
+
+					// Add our todo from the mutation to the end.
+					const newWaitingUsers = data.waitingUsers.filter(user => user.id !== userId);
+
+					// Write our data back to the cache.
+					store.writeQuery({
+						data: {
+							waitingUsers: newWaitingUsers,
+						},
+						query: waitingUsersQuery,
+					});
+				},
 				variables: {
 					accepted,
 					userId,
 				},
 			});
-			// TODO: Delete user from cache on successfull response
 		} catch (error) {}
 	};
 
 	render() {
 		const { classes } = this.props;
+
 		return (
-			<Query query={respondUsersQuery}>
-				{({ loading, error, data }) =>
+			<Query query={waitingUsersQuery}>
+				{({ data, loading }) =>
 					loading ? (
 						<div className={classes.loading}>
 							<Spin size="large" />
@@ -115,4 +139,4 @@ class UsersAuthorizationList extends Component {
 		);
 	}
 }
-export default graphql(mutationResponseWaitingUsers)(injectSheet(style)(UsersAuthorizationList));
+export default graphql(mutationResponseToWaitingUsers)(injectSheet(style)(UsersAuthorizationList));

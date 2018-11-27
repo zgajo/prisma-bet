@@ -117,6 +117,53 @@ const resetTokenMail = async (user, token) => {
 	}
 };
 
+const sendResponseEmailToUser = async (user, accepted) => {
+	let message = {
+		attachments: [
+			{
+				cid: 'authorization_img',
+				contentDisposition: 'inline',
+				filename: 'email-authorization.jpg',
+				path: path.join(__dirname, '/../images/email-authorization.jpg'),
+			},
+		],
+		from: process.env.OUTLOOK_MAIL,
+		// server from which is mail sent
+		html: `
+		<table align="center"  cellpadding="0" cellspacing="0" width="600">
+			<tr>
+				<td bgcolor="#ffffff" style="padding: 10px">
+					Hello ${user.name},<br /><br />
+					This is a response for your request to register on ${process.env.CLIENT_URL} website. <br />
+					${
+						accepted
+							? "We're happy to inform you that your permision to register has been granted"
+							: 'Sadly your request has been denied'
+					}
+					<br />
+					${accepted ? '<a href="' + process.env.CLIENT_URL + '">Go to page</a>' : ''}
+				</td>
+			</tr>
+		</table>
+		`,
+		subject: 'Website permission response',
+		to: user.email,
+	};
+
+	let transport = setupMail();
+
+	try {
+		const response = await transport.sendMail(message);
+
+		return Promise.resolve(response);
+	} catch (error) {
+		return Promise.reject({
+			errorType: 'email',
+			message: 'There was a problem with sending email, please try little later',
+		});
+	}
+};
+
 async function sendEmailNewUserToAdmin(name, email) {
 	// On if we get less than 3 errors, try to send message again
 	let errorCount = 0;
@@ -141,4 +188,5 @@ async function sendEmailNewUserToAdmin(name, email) {
 module.exports = {
 	resetTokenMail,
 	sendEmailNewUserToAdmin,
+	sendResponseEmailToUser,
 };

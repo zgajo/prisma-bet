@@ -10,13 +10,12 @@ const httpLink = new HttpLink({
 	uri: `${process.env.REACT_APP_SERVER_URL}/graphql`,
 });
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({ dataIdFromObject: o => o.id });
 
 const httpLinkWithMiddleware = from([getTokenMiddleware, setTokenAfterware.concat(httpLink)]);
 
 export const client = new ApolloClient({
 	cache,
-	dataIdFromObject: o => o.id,
 	link: httpLinkWithMiddleware,
 });
 
