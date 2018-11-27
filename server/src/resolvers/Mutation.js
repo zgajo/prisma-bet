@@ -43,6 +43,52 @@ const Mutation = {
 			};
 		}
 	},
+	forgotPasswordConfirm: async (_, { password, password_confirm, resetPasswordToken }, ctx) => {
+		try {
+			const users = await ctx.db.query.users({ where: { resetPasswordToken } });
+
+			if (!users.length)
+				return {
+					message: 'Token not found',
+					success: false,
+				};
+
+			const user = users[0];
+
+			if (new Date() > user.resetPasswordExpires)
+				return {
+					message: 'Reset password time expired',
+					success: false,
+				};
+
+			if (password !== password_confirm)
+				return {
+					message: 'Passwords do not match',
+					success: false,
+				};
+
+			const hashedPassword = await hash(password, 10);
+
+			await ctx.db.mutation.updateUser({
+				data: {
+					password: hashedPassword,
+					resetPasswordExpires: null,
+					resetPasswordToken: null,
+				},
+				where: { id: user.id },
+			});
+
+			return {
+				message: 'Password succesfully changed',
+				success: true,
+			};
+		} catch (error) {
+			return {
+				message: 'There was an error',
+				success: false,
+			};
+		}
+	},
 	login: async (_, { username, password }, ctx) => {
 		const user = await ctx.db.query.user({ where: { username } });
 

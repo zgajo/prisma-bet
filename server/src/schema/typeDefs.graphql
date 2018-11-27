@@ -20,6 +20,7 @@ type Mutation {
 	signup(email: String!, name: String!, password: String!, username: String!): ResolverResponse!
 	responseWaitingUser(userId: ID!, accepted: Boolean!): Boolean!
 	forgotPassword(email: String!): ResolverResponse!
+	forgotPasswordConfirm(password: String!, password_confirm: String!, resetPasswordToken: String!): ResolverResponse!
 }
 
 interface AuthPayload {
