@@ -1,20 +1,11 @@
 import React, { Component } from 'react';
-import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import { Form, Icon, Input, Button, message } from 'antd';
 import { Link } from 'react-router-dom';
 
-const FormItem = Form.Item;
+import { mutation } from '../graphql';
 
-const loginMutation = gql`
-	mutation($username: String!, $password: String!) {
-		login(username: $username, password: $password) {
-			success
-			message
-			token
-		}
-	}
-`;
+const FormItem = Form.Item;
 
 class NormalLoginForm extends Component {
 	errorMsg = msg => {
@@ -57,7 +48,7 @@ class NormalLoginForm extends Component {
 		const { getFieldDecorator } = this.props.form;
 
 		return (
-			<Mutation mutation={loginMutation}>
+			<Mutation mutation={mutation.login}>
 				{(login, { loading }) => (
 					<div className="log-reg-page">
 						<div className={'log-reg-container'}>

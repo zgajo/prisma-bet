@@ -24,6 +24,7 @@
 	"dependencies": {
 		"concurrently": "^4.0.1",
 		"eslint": "^5.6.0",
+		"gql-generator": "git+https://github.com/zgajo/gql-generator.git",
 		"jest": "^23.6.0"
 	},
 	"devDependencies": {

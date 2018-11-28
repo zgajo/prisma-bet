@@ -10,6 +10,7 @@
     "apollo-link": "^1.2.3",
     "apollo-link-error": "^1.1.1",
     "apollo-link-http": "^1.5.5",
+    "gql-generator": "git+https://github.com/zgajo/gql-generator.git",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
     "jwt-decode": "^2.2.0",
@@ -26,7 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "gqlg": "gqlg --schemaFilePath ../server/src/schema --destDirPath ./src/graphql --workingEnvironment client"
   },
   "browserslist": [
     ">0.2%",
