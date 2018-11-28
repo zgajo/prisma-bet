@@ -1,3 +1,6 @@
+# import UserWhereInput from './inputTypes.graphql'
+# import UserOrderByInput from './inputTypes.graphql'
+
 scalar DateTime
 
 type User {
@@ -10,9 +13,9 @@ type User {
 }
 
 type Query {
-	waitingUsers: [User!]!
+	waitingUsers(where: UserWhereInput, orderBy: UserOrderByInput): [User!]!
 	me: User
-	users: [User!]!
+	users(where: UserWhereInput, orderBy: UserOrderByInput): [User!]!
 }
 
 type Mutation {

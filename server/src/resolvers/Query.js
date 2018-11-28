@@ -8,7 +8,7 @@ const Query = {
 		return ctx.db.query.users({}, info);
 	},
 	waitingUsers: (parent, args, ctx) => {
-		return ctx.db.query.users({ where: { accepted: false } });
+		return ctx.db.query.users({ where: { ...args.where, accepted: false } });
 	},
 };
 

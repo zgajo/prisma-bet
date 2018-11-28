@@ -20,6 +20,7 @@
     "cors": "^2.8.4",
     "dotenv": "^6.1.0",
     "graphql": "^0.13.2",
+    "graphql-import": "^0.7.1",
     "graphql-shield": "^4.1.0",
     "graphql-yoga": "^1.16.7",
     "jsonwebtoken": "^8.3.0",

@@ -1,9 +1,10 @@
 const { Prisma } = require('prisma-binding');
 const { resolvers } = require('./resolvers');
+const { importSchema } = require('graphql-import');
 
 const fs = require('fs');
 
-const typeDefs = fs.readFileSync(__dirname + '/schema/typeDefs.graphql', 'utf8');
+const typeDefs = importSchema(__dirname + '/schema/typeDefs.graphql');
 
 // Exporting prisma, so that can be imported for  testing
 const db = new Prisma({
