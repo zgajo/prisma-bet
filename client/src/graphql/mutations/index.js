@@ -9,6 +9,7 @@ export const login = gql`
 		}
 	}
 `;
+
 export const signup = gql`
 	mutation signup($email: String!, $name: String!, $password: String!, $username: String!) {
 		signup(email: $email, name: $name, password: $password, username: $username) {
@@ -17,11 +18,13 @@ export const signup = gql`
 		}
 	}
 `;
+
 export const responseToWaitingUser = gql`
 	mutation responseToWaitingUser($userId: ID!, $accepted: Boolean!) {
 		responseToWaitingUser(userId: $userId, accepted: $accepted)
 	}
 `;
+
 export const forgotPassword = gql`
 	mutation forgotPassword($email: String!) {
 		forgotPassword(email: $email) {
@@ -30,6 +33,7 @@ export const forgotPassword = gql`
 		}
 	}
 `;
+
 export const forgotPasswordConfirm = gql`
 	mutation forgotPasswordConfirm($password: String!, $password_confirm: String!, $resetPasswordToken: String!) {
 		forgotPasswordConfirm(
