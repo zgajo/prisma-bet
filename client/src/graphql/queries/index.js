@@ -12,6 +12,7 @@ export const waitingUsers = gql`
 		}
 	}
 `;
+
 export const me = gql`
 	query me {
 		me {
@@ -24,6 +25,7 @@ export const me = gql`
 		}
 	}
 `;
+
 export const users = gql`
 	query users($where: UserWhereInput, $orderBy: UserOrderByInput) {
 		users(where: $where, orderBy: $orderBy) {

@@ -1,5 +1,9 @@
 # source: http://localhost:4466/klada/dev
-# timestamp: Mon Nov 26 2018 16:31:31 GMT+0100 (Central European Standard Time)
+# timestamp: Fri Nov 30 2018 17:18:26 GMT+0100 (Central European Standard Time)
+
+type AggregateSite {
+  count: Int!
+}
 
 type AggregateUser {
   count: Int!
@@ -23,11 +27,17 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createSite(data: SiteCreateInput!): Site!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateSite(data: SiteUpdateInput!, where: SiteWhereUniqueInput!): Site
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteSite(where: SiteWhereUniqueInput!): Site
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertSite(where: SiteWhereUniqueInput!, create: SiteCreateInput!, update: SiteUpdateInput!): Site!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  updateManySites(data: SiteUpdateInput!, where: SiteWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManySites(where: SiteWhereInput): BatchPayload!
   executeRaw(database: PrismaDatabase, query: String!): Json!
 }
 
@@ -64,8 +74,11 @@ enum PrismaDatabase {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  sites(where: SiteWhereInput, orderBy: SiteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Site]!
   user(where: UserWhereUniqueInput!): User
+  site(where: SiteWhereUniqueInput!): Site
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  sitesConnection(where: SiteWhereInput, orderBy: SiteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SiteConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -74,8 +87,328 @@ type Query {
   ): Node
 }
 
+type Site implements Node {
+  id: ID!
+  name: String!
+  link: String!
+  domElements: String!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+}
+
+"""A connection to a list of items."""
+type SiteConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SiteEdge]!
+  aggregate: AggregateSite!
+}
+
+input SiteCreateInput {
+  name: String!
+  link: String!
+  domElements: String!
+  users: UserCreateManyWithoutBettingSitesInput
+}
+
+input SiteCreateManyWithoutUsersInput {
+  create: [SiteCreateWithoutUsersInput!]
+  connect: [SiteWhereUniqueInput!]
+}
+
+input SiteCreateWithoutUsersInput {
+  name: String!
+  link: String!
+  domElements: String!
+}
+
+"""An edge in a connection."""
+type SiteEdge {
+  """The item at the end of the edge."""
+  node: Site!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum SiteOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  link_ASC
+  link_DESC
+  domElements_ASC
+  domElements_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type SitePreviousValues {
+  id: ID!
+  name: String!
+  link: String!
+  domElements: String!
+}
+
+type SiteSubscriptionPayload {
+  mutation: MutationType!
+  node: Site
+  updatedFields: [String!]
+  previousValues: SitePreviousValues
+}
+
+input SiteSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SiteSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SiteSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SiteSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: SiteWhereInput
+}
+
+input SiteUpdateInput {
+  name: String
+  link: String
+  domElements: String
+  users: UserUpdateManyWithoutBettingSitesInput
+}
+
+input SiteUpdateManyWithoutUsersInput {
+  create: [SiteCreateWithoutUsersInput!]
+  connect: [SiteWhereUniqueInput!]
+  disconnect: [SiteWhereUniqueInput!]
+  delete: [SiteWhereUniqueInput!]
+  update: [SiteUpdateWithWhereUniqueWithoutUsersInput!]
+  upsert: [SiteUpsertWithWhereUniqueWithoutUsersInput!]
+}
+
+input SiteUpdateWithoutUsersDataInput {
+  name: String
+  link: String
+  domElements: String
+}
+
+input SiteUpdateWithWhereUniqueWithoutUsersInput {
+  where: SiteWhereUniqueInput!
+  data: SiteUpdateWithoutUsersDataInput!
+}
+
+input SiteUpsertWithWhereUniqueWithoutUsersInput {
+  where: SiteWhereUniqueInput!
+  update: SiteUpdateWithoutUsersDataInput!
+  create: SiteCreateWithoutUsersInput!
+}
+
+input SiteWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SiteWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SiteWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SiteWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  link: String
+
+  """All values that are not equal to given value."""
+  link_not: String
+
+  """All values that are contained in given list."""
+  link_in: [String!]
+
+  """All values that are not contained in given list."""
+  link_not_in: [String!]
+
+  """All values less than the given value."""
+  link_lt: String
+
+  """All values less than or equal the given value."""
+  link_lte: String
+
+  """All values greater than the given value."""
+  link_gt: String
+
+  """All values greater than or equal the given value."""
+  link_gte: String
+
+  """All values containing the given string."""
+  link_contains: String
+
+  """All values not containing the given string."""
+  link_not_contains: String
+
+  """All values starting with the given string."""
+  link_starts_with: String
+
+  """All values not starting with the given string."""
+  link_not_starts_with: String
+
+  """All values ending with the given string."""
+  link_ends_with: String
+
+  """All values not ending with the given string."""
+  link_not_ends_with: String
+  domElements: String
+
+  """All values that are not equal to given value."""
+  domElements_not: String
+
+  """All values that are contained in given list."""
+  domElements_in: [String!]
+
+  """All values that are not contained in given list."""
+  domElements_not_in: [String!]
+
+  """All values less than the given value."""
+  domElements_lt: String
+
+  """All values less than or equal the given value."""
+  domElements_lte: String
+
+  """All values greater than the given value."""
+  domElements_gt: String
+
+  """All values greater than or equal the given value."""
+  domElements_gte: String
+
+  """All values containing the given string."""
+  domElements_contains: String
+
+  """All values not containing the given string."""
+  domElements_not_contains: String
+
+  """All values starting with the given string."""
+  domElements_starts_with: String
+
+  """All values not starting with the given string."""
+  domElements_not_starts_with: String
+
+  """All values ending with the given string."""
+  domElements_ends_with: String
+
+  """All values not ending with the given string."""
+  domElements_not_ends_with: String
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
+}
+
+input SiteWhereUniqueInput {
+  id: ID
+  name: String
+  link: String
+}
+
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  site(where: SiteSubscriptionWhereInput): SiteSubscriptionPayload
 }
 
 type User implements Node {
@@ -89,6 +422,7 @@ type User implements Node {
   username: String!
   resetPasswordToken: String
   resetPasswordExpires: String
+  bettingSites(where: SiteWhereInput, orderBy: SiteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Site!]
 }
 
 """A connection to a list of items."""
@@ -102,6 +436,23 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  accepted: Boolean
+  admin: Boolean
+  email: String!
+  name: String!
+  password: String!
+  username: String!
+  resetPasswordToken: String
+  resetPasswordExpires: String
+  bettingSites: SiteCreateManyWithoutUsersInput
+}
+
+input UserCreateManyWithoutBettingSitesInput {
+  create: [UserCreateWithoutBettingSitesInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateWithoutBettingSitesInput {
   accepted: Boolean
   admin: Boolean
   email: String!
@@ -207,6 +558,38 @@ input UserUpdateInput {
   username: String
   resetPasswordToken: String
   resetPasswordExpires: String
+  bettingSites: SiteUpdateManyWithoutUsersInput
+}
+
+input UserUpdateManyWithoutBettingSitesInput {
+  create: [UserCreateWithoutBettingSitesInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutBettingSitesInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutBettingSitesInput!]
+}
+
+input UserUpdateWithoutBettingSitesDataInput {
+  accepted: Boolean
+  admin: Boolean
+  email: String
+  name: String
+  password: String
+  username: String
+  resetPasswordToken: String
+  resetPasswordExpires: String
+}
+
+input UserUpdateWithWhereUniqueWithoutBettingSitesInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutBettingSitesDataInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutBettingSitesInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutBettingSitesDataInput!
+  create: UserCreateWithoutBettingSitesInput!
 }
 
 input UserWhereInput {
@@ -528,6 +911,9 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   resetPasswordExpires_not_ends_with: String
+  bettingSites_every: SiteWhereInput
+  bettingSites_some: SiteWhereInput
+  bettingSites_none: SiteWhereInput
 }
 
 input UserWhereUniqueInput {

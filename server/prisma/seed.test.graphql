@@ -21,4 +21,7 @@ mutation {
 	) {
 		id
 	}
+	bs1: createSite(data: { name: "Bet 365", link: "www.bet365.com", domElements: "dom" }) {
+		id
+	}
 }

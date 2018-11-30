@@ -10,4 +10,13 @@ type User {
 	username: String! @unique
 	resetPasswordToken: String
 	resetPasswordExpires: String
+	bettingSites: [Site!]!
+}
+
+type Site {
+	id: ID! @unique
+	name: String! @unique
+	link: String! @unique
+	domElements: String!
+	users: [User!]!
 }

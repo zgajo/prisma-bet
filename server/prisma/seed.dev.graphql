@@ -21,4 +21,24 @@ mutation {
 	) {
 		id
 	}
+	bs1: createSite(data: { name: "Bet 365", link: "www.bet365.com", domElements: "dom" }) {
+		id
+	}
+
+	# Connecting site to user
+	# mutation {
+	# 	updateUser(
+	# 		data: { bettingSites: { connect: { id: "cjp46el1700330a08z4ec36c5" } } }
+	# 		where: { id: "cjp46ekzw002z0a08bs57h7zh" }
+	# 	) {
+	# 		id
+	# 		accepted
+	# 		email
+	# 		name
+	# 		bettingSites {
+	# 			id
+	# 			name
+	# 		}
+	# 	}
+	# }
 }
