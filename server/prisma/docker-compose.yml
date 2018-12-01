@@ -1,7 +1,7 @@
 version: '3'
 services:
   prisma:
-    image: prismagraphql/prisma:1.18
+    image: prismagraphql/prisma:1.21
     restart: always
     ports:
       - '4466:4466'
@@ -20,7 +20,7 @@ services:
             migrations: true
             rawAccess: true
   prisma_test:
-    image: prismagraphql/prisma:1.18
+    image: prismagraphql/prisma:1.21
     restart: always
     ports:
       - '4467:4467'
