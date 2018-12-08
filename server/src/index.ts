@@ -1,9 +1,10 @@
-require('dotenv').config();
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-const { GraphQLServer } = require('graphql-yoga');
-const { permissions } = require('./permissions');
+import { GraphQLServer } from 'graphql-yoga';
+import { permissions } from './permissions';
 
-const { context, resolvers, typeDefs } = require('./api');
+import { context, resolvers, typeDefs } from './api';
 
 const server = new GraphQLServer({
 	context,
@@ -12,7 +13,7 @@ const server = new GraphQLServer({
 	typeDefs,
 });
 
-//TODO: add audit
+// TODO: add audit
 
 const serverOptions = {
 	debug: true,

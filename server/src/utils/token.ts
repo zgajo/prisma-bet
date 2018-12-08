@@ -1,7 +1,21 @@
-const { verify } = require('jsonwebtoken');
-const APP_SECRET = 'appsecret321';
+import { verify } from 'jsonwebtoken';
+export const APP_SECRET = 'appsecret321';
 
-function getUser(context) {
+interface Context {
+	request: {
+		headers: {
+			authorization: string;
+		};
+	};
+}
+
+interface UserData {
+	id: string;
+	name: string;
+	admin: string;
+}
+
+export function getUser(context: Context) {
 	const Authorization = context && context.request && context.request.headers && context.request.headers.authorization;
 
 	if (Authorization) {
@@ -10,18 +24,14 @@ function getUser(context) {
 
 		return verifiedToken;
 	}
+
+	return undefined;
 }
 
-function tokenCreationData(user) {
+export function tokenCreationData(user: UserData) {
 	return {
 		id: user.id,
 		isAdmin: user.admin,
 		name: user.name,
 	};
 }
-
-module.exports = {
-	APP_SECRET,
-	getUser,
-	tokenCreationData,
-};

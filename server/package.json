@@ -1,57 +1,64 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "cross-env NODE_ENV=production node .",
-    "dev": "nodemon .",
-    "docker:setup": "cd prisma && docker-compose up -d",
-    "prisma:deploy": "prisma reset -f  && prisma deploy && prisma reset -f  -e .env.test && prisma deploy -e .env.test",
-    "build": "babel --ignore __tests__,__mocks__ --out-dir dist src",
-    "test": "cd .. && npm run test:server"
-  },
-  "author": "Darko Pranjić",
-  "license": "ISC",
-  "dependencies": {
-    "@types/jest": "^23.3.9",
-    "bcrypt": "^3.0.2",
-    "body-parser": "^1.18.3",
-    "cors": "^2.8.4",
-    "dotenv": "^6.1.0",
-    "graphql": "^0.13.2",
-    "graphql-shield": "^4.1.0",
-    "graphql-yoga": "^1.16.7",
-    "jsonwebtoken": "^8.3.0",
-    "nodemailer": "^4.6.8",
-    "passport": "^0.4.0",
-    "passport-local": "^1.0.0",
-    "prisma-binding": "^2.1.6"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ]
-    ],
-    "plugins": [
-      "transform-object-rest-spread"
-    ]
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
-    "cross-env": "^5.2.0",
-    "husky": "^1.1.2",
-    "jest": "^23.6.0",
-    "nodemon": "^1.18.5"
-  }
+	"name": "server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "src/index.js",
+	"scripts": {
+		"start": "cross-env NODE_ENV=production node .",
+		"dev": "nodemon --exec ts-node src/index.ts",
+		"docker:setup": "cd prisma && docker-compose up -d",
+		"prisma:deploy": "prisma reset -f  && prisma deploy && prisma reset -f  -e .env.test && prisma deploy -e .env.test",
+		"build": "babel --ignore __tests__,__mocks__ --out-dir dist src",
+		"test": "cd .. && npm run test:server"
+	},
+	"author": "Darko Pranjić",
+	"license": "ISC",
+	"dependencies": {
+		"@types/jest": "^23.3.9",
+		"bcrypt": "^3.0.2",
+		"body-parser": "^1.18.3",
+		"cors": "^2.8.4",
+		"dotenv": "^6.1.0",
+		"graphql": "^0.13.2",
+		"graphql-shield": "^4.1.0",
+		"graphql-yoga": "^1.16.7",
+		"jsonwebtoken": "^8.3.0",
+		"nodemailer": "^4.6.8",
+		"passport": "^0.4.0",
+		"passport-local": "^1.0.0",
+		"prisma-binding": "^2.1.6"
+	},
+	"babel": {
+		"presets": [
+			[
+				"env",
+				{
+					"targets": {
+						"node": "current"
+					}
+				}
+			]
+		],
+		"plugins": [
+			"transform-object-rest-spread"
+		]
+	},
+	"devDependencies": {
+		"@types/dotenv": "^6.1.0",
+		"@types/jsonwebtoken": "^8.3.0",
+		"@types/node": "^10.12.12",
+		"@types/nodemailer": "^4.6.5",
+		"babel-cli": "^6.26.0",
+		"babel-core": "^6.26.3",
+		"babel-plugin-transform-object-rest-spread": "^6.26.0",
+		"babel-preset-env": "^1.7.0",
+		"babel-register": "^6.26.0",
+		"cross-env": "^5.2.0",
+		"husky": "^1.1.2",
+		"jest": "^23.6.0",
+		"nodemon": "^1.18.7",
+		"tslint": "^5.11.0",
+		"tslint-config-prettier": "^1.17.0",
+		"typescript": "^3.2.1"
+	}
 }

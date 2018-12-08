@@ -1,5 +1,5 @@
-const nodemailer = require('nodemailer');
-const path = require('path');
+import * as nodemailer from 'nodemailer';
+import * as path from 'path';
 
 function setupMail() {
 	return nodemailer.createTransport({
@@ -13,11 +13,11 @@ function setupMail() {
 		tls: {
 			ciphers: 'SSLv3',
 		},
-	});
+	} as any);
 }
 
-async function sendNewUserMail(name, email, id) {
-	let message = {
+async function sendNewUserMail(name: string, email: string, id?: string) {
+	const message = {
 		attachments: [
 			{
 				cid: 'authorization_img',
@@ -51,10 +51,10 @@ async function sendNewUserMail(name, email, id) {
 		to: process.env.MAIN_EMAIL,
 	};
 
-	let transport = setupMail();
+	const transport = setupMail();
 
 	try {
-		const response = await transport.sendMail(message);
+		const response = await transport.sendMail(message as any);
 
 		return Promise.resolve(response);
 	} catch (error) {
@@ -65,7 +65,7 @@ async function sendNewUserMail(name, email, id) {
 	}
 }
 
-async function sendEmailNewUserToAdmin(name, email) {
+async function sendEmailNewUserToAdmin(name: string, email: string) {
 	// On if we get less than 3 errors, try to send message again
 	let errorCount = 0;
 	let successful = false;
@@ -82,10 +82,12 @@ async function sendEmailNewUserToAdmin(name, email) {
 		}
 	} while (errorCount < 3 && !successful);
 
-	if (response.errorType === 'email') return Promise.reject(response);
+	if (response.errorType === 'email') {
+		return Promise.reject(response);
+	}
 	return Promise.resolve(response);
 }
 
-module.exports = {
+export default {
 	sendEmailNewUserToAdmin,
 };

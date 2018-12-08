@@ -4,7 +4,9 @@ const { Mutation } = require('./Mutation');
 const resolvers = {
 	// Need to add __resolveType for interface to remove warning
 	AuthPayload: {
-		__resolveType() {},
+		__resolveType() {
+			return;
+		},
 	},
 	Mutation,
 	Query,

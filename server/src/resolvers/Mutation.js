@@ -1,7 +1,7 @@
-const { hash, compare } = require('bcrypt');
-const { sign } = require('jsonwebtoken');
-const { APP_SECRET, tokenCreationData } = require('../utils/token');
-const { sendEmailNewUserToAdmin } = require('../utils/email');
+import { hash, compare } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
+import { APP_SECRET, tokenCreationData } from '../utils/token';
+import { sendEmailNewUserToAdmin } from '../utils/email';
 
 //TODO: Bet site -> bet_site_user <- User // many to many
 const Mutation = {

@@ -1,13 +1,13 @@
-const { rule, shield, and } = require('graphql-shield');
-const { sign } = require('jsonwebtoken');
-const { getUser, APP_SECRET, tokenCreationData } = require('../utils/token');
+import { rule, shield, and } from 'graphql-shield';
+import { sign } from 'jsonwebtoken';
+import { getUser, APP_SECRET, tokenCreationData } from '../utils/token';
 
 const rules = {
 	isAdmin: rule()(async (_, __, ctx) => {
-		const user = getUser(ctx);
+		const user: any = getUser(ctx);
 		const userIdValid = !!user;
 
-		if (userIdValid) {
+		if (userIdValid && user !== undefined) {
 			const userAdmin = await ctx.db.query.user({ where: { id: user.id } });
 
 			return userAdmin.admin ? true : false;
@@ -16,7 +16,7 @@ const rules = {
 		return false;
 	}),
 	isAuthenticated: rule()((_, __, ctx) => {
-		const user = getUser(ctx);
+		const user: any = getUser(ctx);
 		const userIdValid = !!user;
 
 		if (userIdValid) {
@@ -29,7 +29,7 @@ const rules = {
 					{
 						// change iat only if we're in  test enviroment
 						// Doing this because if test token is issued at same second as this creation, it will generate same token and test will break
-						...(process.env.NODE_ENV === 'test' && { iat: new Date() - 1 }),
+						...(process.env.NODE_ENV === 'test' && { iat: (new Date() as any) - 1 }),
 						...tokenCreationData(user),
 					},
 					APP_SECRET,
@@ -44,7 +44,7 @@ const rules = {
 	}),
 };
 
-const permissions = shield({
+export const permissions = shield({
 	Mutation: {
 		responseWaitingUser: and(rules.isAuthenticated, rules.isAdmin),
 	},
@@ -53,7 +53,3 @@ const permissions = shield({
 		waitingUsers: and(rules.isAuthenticated, rules.isAdmin),
 	},
 });
-
-module.exports = {
-	permissions,
-};
